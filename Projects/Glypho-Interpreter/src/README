@@ -1,0 +1,64 @@
+Cristian Cotovanu 336CAa
+
+LFA - Interpretor Glypho
+
+Scopul temei: Implementarea unui interpretor pentru un limbaj glypho
+
+Implementare:
+    Am considerat instructiunile ca fiind in baza 3 si am atribuit fiecarei
+    instructiuni numarul din baza 10 dupa cum s-a specificat si optional in enunt.
+
+    Decodificarea instructiunilor este facuta de catre clasa Decoder,
+    construiesc cate un map pentru fiecare instructiune
+    <caracterInstructiune, timpAparitie> pe care il completez pe masura
+    ce parcurg caracterele din instructiune.
+
+    ---------------------------------------------------------------------------
+    Am folosit un map pentru a face o asociere intre cele 2 tipuri de paranteze.
+    Asociind astfel indexului parantezei curente indexul parantezei
+    pe care o inchide/deschide.
+
+    Pentru verificarea numarului de paranteze am folosit o stiva unde retin
+    indexul fiecarei paranteze, cand decodific toate instructiunile folosesc
+    urmatorul algoritm:
+
+    instructiunea este
+        - paranteza deschisa '['
+            -> push in stack indexului '['
+        - paranteza inchisa ']'
+            -> am un corespondent '[' in stiva -> pop din stack si completez
+            maparea indicilor pentru a-i folosi in interpretare.
+            -> nu am corespondent -> push in stack indexului ']'
+    daca stiva este goala inseamna ca fiecare paranteza deschisa a fost
+    inchisa de una corespunzatoare.
+
+    ---------------------------------------------------------------------------
+    Clasele InputHandler si OutputHandler se ocupa de interactiunea cu I/O.
+    InputH
+        - citeste string-ul glypho din fisier.
+        - citeste de la stdin
+    OutputH
+        - afiseaza erorile/exceptiile catre stderr
+        - afiseaza la stdout si daca e nevoie face conversia in alta baza
+
+    ---------------------------------------------------------------------------
+    Clasa Interpreter simuleaza automatul necesar rezolvarii problemei.
+    Retin
+    - indexul instructiunii curente
+    - lista de instructiuni decodificate (reprezentare in baza 3,
+    valorile fiind mapate unora din baza 10)
+    - stiva in care adaug elementele pe care se fac operatiile
+    corespunzatoare starii curente a automatului.
+    - maparea parantezelor, de la un index la altul
+
+    Functia interpretGlypho parcurge starile automatului apeland functii
+    de I/O si errorHandling, daca este necesar, pana cand acesta se opreste.
+
+    Am acoperit toate exceptiile/erorile precizate in enunt.
+
+    ---------------------------------------------------------------------------
+    Am folosit BigInteger pentru a acoperi testele cu numere foarte mari.
+    Bonus: Am facut translatia in alta baza daca aceasta este specificata,
+    atunci cand citesc numerele de la input, dar si la afisarea acestora
+    la output
+
